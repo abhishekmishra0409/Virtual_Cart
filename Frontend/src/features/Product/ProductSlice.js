@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import productService from "./productService";
+import productService from "./ProductService";
 import { toast } from "react-toastify";
 
 // Fetch all products

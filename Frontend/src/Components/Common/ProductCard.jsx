@@ -66,7 +66,7 @@ export const ProductCard = ({ product }) => {
                     <br/>
                     <a
                         className="color-brand-3 font-sm-bold no-underline"
-                        href={`/shop/${productId}`}
+                        href={`/product/${productId}`}
                     >
                         {productTitle}
                     </a>

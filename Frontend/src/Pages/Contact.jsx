@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { sendContact, resetState } from "../features/Contact/contactSlice";
+import { sendContact, resetState } from "../features/Contact/ContactSlice";
 
 export const Contact = () => {
     const dispatch = useDispatch();

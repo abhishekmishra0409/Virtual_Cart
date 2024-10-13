@@ -3,7 +3,7 @@ import { Dropdown, ButtonGroup } from 'react-bootstrap';
 import { BlogCard } from "../Components/Common/BlogCard.jsx";
 import { BlogSideBar } from "../Components/BlogPage/BlogSidebar.jsx";
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllBlogs } from '../features/blog/BlogSlice.js';
+import { getAllBlogs } from '../features/Blog/BlogSlice.js';
 
 export const Blog = () => {
     const dispatch = useDispatch();

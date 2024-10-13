@@ -30,13 +30,13 @@ TABLE CONTENT
 @import url(https://fonts.bunny.net/css?family=dm-sans:400,500,700|kanit:700);
 /*import vendors*/
 
-@import url(../css/vendors/normalize.css);
-@import url(../css/vendors/bootstrap.min.css);
-@import url(../css/vendors/uicons-regular-rounded.css);
-@import url(../css/plugins/swiper-bundle.min.css);
-@import url(../css/plugins/select2.min.css);
-@import url(../css/plugins/slick.css);
-@import url(../css/plugins/animate.min.css);
+@import url(../Css/vendors/normalize.css);
+@import url(../Css/vendors/bootstrap.min.css);
+@import url(../Css/vendors/uicons-regular-rounded.css);
+@import url(../Css/plugins/swiper-bundle.min.css);
+@import url(../Css/plugins/select2.min.css);
+@import url(../Css/plugins/slick.css);
+@import url(../Css/plugins/animate.min.css);
 /*RESET*/
 
 html,

@@ -10,7 +10,7 @@ const validateMongoDbId = require("../utils/validateMongodbId");
 const { generateRefreshToken } = require("../config/refreshtoken");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
-const { sendEmail } = require("/emailCtrl");
+const { sendEmail } = require("./emailctrl");
 
 // Create a new user
 const createUser = asyncHandler(async (req, res) => {
@@ -453,12 +453,10 @@ const deleteCartProduct = asyncHandler(async (req, res) => {
     res.status(200).json({ message: "Product removed from cart", cart });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        message: "Error removing product from cart",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error removing product from cart",
+      error: error.message,
+    });
   }
 });
 

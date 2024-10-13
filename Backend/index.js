@@ -23,22 +23,26 @@ const cors = require("cors");
 cloudinaryConfig();
 dbConnect();
 app.use(morgan("dev"));
+
+// CORS configuration
 app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "http://localhost:5175",
-      "http://localhost:5174",
-        "https://virtual-cart-97la.vercel.app/",
-        "http://virtual-cart-97la.vercel.app/",
-        "https://virtual-cart-97la-git-main-abhishekmishra0409s-projects.vercel.app/",
-        "https://virtual-cart-97la-33xfopk8g-abhishekmishra0409s-projects.vercel.app/",
-        "https://virtual-cart-97la-abhishekmishra0409s-projects.vercel.app/"
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
+    cors({
+        origin: [
+            "http://localhost:5173",
+            "http://localhost:5175",
+            "http://localhost:5174",
+            "https://virtual-cart-97la.vercel.app",
+            "https://virtual-cart-97la-git-main-abhishekmishra0409s-projects.vercel.app",
+            "https://virtual-cart-97la-33xfopk8g-abhishekmishra0409s-projects.vercel.app",
+            "https://virtual-cart-97la-abhishekmishra0409s-projects.vercel.app",
+            "https://virtual-cart.onrender.com"
+        ],
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        credentials: true,
+        allowedHeaders: ["Content-Type", "Authorization"],
+    })
 );
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());

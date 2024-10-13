@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllBlogs } from '../../features/blog/blogSlice'; // Import the getAllBlogs action
+import { getAllBlogs } from '../../features/Blog/BlogSlice'; // Import the getAllBlogs action
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';

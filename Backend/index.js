@@ -30,7 +30,7 @@ app.use(
       "http://localhost:5175",
       "http://localhost:5174",
       "https://virtual-cart-6db73.web.app/",
-        ""
+        "https://virtual-cart-97la.vercel.app/"
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,

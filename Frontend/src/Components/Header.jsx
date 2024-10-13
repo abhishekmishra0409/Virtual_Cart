@@ -121,7 +121,7 @@ export const Header = () => {
             {/* Categories Section */}
             <div className="d-flex align-items-center py-3 px-5 bg-white shadow-sm">
                 <Dropdown as={ButtonGroup} className="d-inline-block">
-                    <Dropdown.Toggle variant="outline-secondary" id="dropdownCategory" className=" border-0">
+                    <Dropdown.Toggle variant="outline-secondary" id="dropdownCategory" className="btn-category border-0">
                         <span className=" font-sm-bold color-white">Shop By Categories</span>
                     </Dropdown.Toggle>
 

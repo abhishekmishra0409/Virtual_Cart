@@ -1,7 +1,7 @@
 const bodyParser = require("body-parser");
 const express = require("express");
 const dbConnect = require("./config/dbConnect");
-const {cloudinaryConfig} = require("./utils/cloudinary");
+const { cloudinaryConfig } = require("./utils/cloudinary");
 const { notFound, errorHandler } = require("./middlewares/errorHandler");
 const app = express();
 const dotenv = require("dotenv").config();
@@ -20,14 +20,21 @@ const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const cors = require("cors");
 
-cloudinaryConfig()
+cloudinaryConfig();
 dbConnect();
 app.use(morgan("dev"));
-app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5175','http://localhost:5174'],
-  methods: ['GET', 'POST','PUT','DELETE'],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5175",
+      "http://localhost:5174",
+      "https://virtual-cart-6db73.web.app/",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());

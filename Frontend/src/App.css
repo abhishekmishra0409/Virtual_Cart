@@ -1,0 +1,118 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family:sans-serif ;
+  color: #425A8B;
+}
+.bgcolor{
+  background-color: #466349;
+}
+/*Header Section*/
+
+.Title{
+  text-decoration: none;
+  margin-left: 30px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.Title p{
+  font-size: 25px;
+  color: #466349;
+  font-family: "Wanderlust Shine";
+  margin-bottom: 0;
+}
+/* Custom Nav Link Styles */
+.custom-nav-link {
+  color: #425A8B !important; /* Ensures the link color changes */
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.custom-nav-link:hover {
+  color: #466349 !important; /* Hover color */
+  text-decoration: none;
+}
+
+/* Custom icon color to match the nav links */
+.custom-icon {
+  color: #425A8B; /* Matches the link color */
+  transition: color 0.3s;
+}
+
+/* Change icon color on hover */
+.custom-nav-link:hover .custom-icon {
+  color: #466349; /* Matches hover color */
+}
+
+/* Ensure the badges are styled correctly */
+.badge {
+  font-size: 0.8rem;
+  margin-left: 4px;
+}
+
+/* Other styling adjustments */
+.navbar-brand span {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #425A8B;
+}
+/* Footer Section */
+.footer-bg {
+  background-color: #F0F3F8; /* Use the background color from the image */
+}
+
+.footer-title {
+  color: #0E224D; /* The dark blue color used in titles */
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.footer-links a {
+  color: #0E224D; /* Ensure the links use the same dark blue color */
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer-icon {
+  font-size: 1.25rem;
+  color: #0E224D; /* Use the same color as the titles */
+}
+
+.footer-app-logo {
+  width: 120px;
+  margin-right: 10px;
+}
+
+.footer-payment-logo {
+  width: 40px;
+  margin-right: 10px;
+}
+
+.btn.btn-category {
+  background-color: #466349;
+  background-image: url(assets/imgs/page/homepage4/open-close.svg);
+  background-repeat: no-repeat;
+  background-position: 17px 9px;
+  display: inline-block;
+  padding: 10px 20px 10px 50px;
+  color: #ffffff;
+  min-width: 223px;
+  text-align: left;
+}
+.btn.btn-category:hover{
+  background-color: #466349;
+  color: #ffffff;
+}
+
+
+
+
+.checkout-price {
+  overflow: hidden; /* Prevents overflow */
+  text-align: right; /* Aligns price to the right */
+  white-space: nowrap; /* Prevents text wrapping */
+}

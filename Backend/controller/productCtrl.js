@@ -22,20 +22,37 @@ const createProduct = asyncHandler(async (req, res) => {
 
 
 const updateProduct = asyncHandler(async (req, res) => {
-  const id = req.params;
+  const id = req.params.id; // Correctly get the id from req.params
   validateMongoDbId(id);
+
   try {
+    // If the title is present in the request body, generate a slug for it
     if (req.body.title) {
       req.body.slug = slugify(req.body.title);
     }
-    const updateProduct = await Product.findOneAndUpdate({ id }, req.body, {
-      new: true,
-    });
-    res.json(updateProduct);
+
+    // Update the product by its _id
+    const updatedProduct = await Product.findOneAndUpdate(
+        { _id: id }, // Correctly use _id as the query
+        req.body,
+        {
+          new: true, // Return the updated document
+        }
+    );
+
+    // If the product was not found, return an error response
+    if (!updatedProduct) {
+      res.status(404);
+      throw new Error("Product not found");
+    }
+
+    res.json(updatedProduct);
   } catch (error) {
-    throw new Error(error);
+    res.status(500);
+    throw new Error(error.message);
   }
 });
+
 const deleteProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
@@ -76,13 +93,19 @@ const getAllProduct = asyncHandler(async (req, res) => {
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
+    // Build the query
     let query = Product.find(JSON.parse(queryStr))
         .populate('category')
         .populate('brand')
         .populate('color');
 
-    // Sorting
+    // Search by title
+    if (req.query.title) {
+      const titleSearch = new RegExp(req.query.title, 'i'); // 'i' for case-insensitive search
+      query = query.find({ title: titleSearch });
+    }
 
+    // Sorting
     if (req.query.sort) {
       const sortBy = req.query.sort.split(",").join(" ");
       query = query.sort(sortBy);
@@ -90,8 +113,7 @@ const getAllProduct = asyncHandler(async (req, res) => {
       query = query.sort("-createdAt");
     }
 
-    // limiting the fields
-
+    // Limiting the fields
     if (req.query.fields) {
       const fields = req.query.fields.split(",").join(" ");
       query = query.select(fields);
@@ -99,22 +121,24 @@ const getAllProduct = asyncHandler(async (req, res) => {
       query = query.select("-__v");
     }
 
-    // pagination
-
+    // Pagination
     const page = req.query.page;
     const limit = req.query.limit;
     const skip = (page - 1) * limit;
     query = query.skip(skip).limit(limit);
     if (req.query.page) {
       const productCount = await Product.countDocuments();
-      if (skip >= productCount) throw new Error("This Page does not exists");
+      if (skip >= productCount) throw new Error("This page does not exist");
     }
+
+    // Execute the query
     const product = await query;
     res.json(product);
   } catch (error) {
     throw new Error(error);
   }
 });
+
 
 const addToWishlist = asyncHandler(async (req, res) => {
   const { _id } = req.user;

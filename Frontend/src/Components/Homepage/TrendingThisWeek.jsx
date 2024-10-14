@@ -36,8 +36,8 @@ export const TrendingThisWeek = () => {
                     <div className="row">
                         <div className="col-lg-12">
                             <div className="head-main mb-5">
-                                <h3>Top Selling Products</h3>
-                                <p className="font-base text-gray-500">Special products this month.</p>
+                                <h3>Popular Product</h3>
+                                <p className="font-base text-gray-500">Popular products this month.</p>
                                 <div className="box-button-slider">
                                     <div className="swiper-button-next swiper-button-next-group-2"></div>
                                     <div className="swiper-button-prev swiper-button-prev-group-2"></div>

@@ -137,22 +137,33 @@ export const productSlice = createSlice({
           state.isLoading = true;
         })
         .addCase(updateProduct.fulfilled, (state, action) => {
-          state.isLoading = false;
-          state.isError = false;
-          state.isSuccess = true;
-          const index = state.products.findIndex(product => product._id === action.payload._id);
-          if (index !== -1) {
-            state.products[index] = action.payload; // Update the existing product
-          }
-            toast.success("Product Updated Successfully!");
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+
+            // Check if action.payload is valid and contains an _id
+            if (action.payload && action.payload._id) {
+                const index = state.products.findIndex(product => product._id === action.payload._id);
+                if (index !== -1) {
+                    state.products[index] = action.payload; // Update the existing product
+                }
+                toast.success("Product Updated Successfully!");
+            } else {
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = "Failed to update the product: Invalid response data.";
+                toast.error("Failed to update the product: Invalid response data.");
+            }
         })
         .addCase(updateProduct.rejected, (state, action) => {
-          state.isLoading = false;
-          state.isError = true;
-          state.isSuccess = false;
-          state.message = action.error.message;
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.error.message;
+            toast.error("Failed to update the product.");
         })
-        // Delete a product
+
+      // Delete a product
         .addCase(deleteProduct.pending, (state) => {
           state.isLoading = true;
         })

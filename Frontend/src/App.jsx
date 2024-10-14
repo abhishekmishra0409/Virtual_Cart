@@ -24,6 +24,7 @@ import {Notification} from "./Components/Accounts/Notification.jsx";
 import {UserSetting} from "./Components/Accounts/UserSetting.jsx";
 import {Order} from "./Components/Accounts/Order.jsx";
 import {BlogByCategory} from "./Pages/BlogByCategory.jsx";
+import {ProductBySearch} from "./Pages/ProductBySearch.jsx";
 
 export default function App() {
     return (
@@ -33,6 +34,7 @@ export default function App() {
                     <Route path="/" element={<Layout />}>
                         <Route index element={<Home />} />
                         <Route path="shop" element={<Shop />} />
+                        <Route path="/shop/title/:title" element={<ProductBySearch />} />
                         <Route path="shop/category/:id" element={<ProductByCategory />} />
                         <Route path="shop/color/:id" element={<ProductByColor />} />
                         <Route path="shop/price/:gte/:lte" element={<ProductByPrice />} />

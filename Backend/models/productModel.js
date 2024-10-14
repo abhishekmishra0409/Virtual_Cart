@@ -13,7 +13,7 @@ const productSchema = new mongoose.Schema(
             required: true,
             unique: true,
             lowercase: true,
-            trim: true, // Trim whitespace
+            trim: true,
         },
         description: {
             type: String,
@@ -22,7 +22,7 @@ const productSchema = new mongoose.Schema(
         price: {
             type: Number,
             required: true,
-            min: 0, // Ensure the price is not negative
+            min: 0,
         },
         category: {
             type: mongoose.Schema.Types.ObjectId,
@@ -37,22 +37,22 @@ const productSchema = new mongoose.Schema(
         quantity: {
             type: Number,
             required: true,
-            min: 0, // Ensure quantity is not negative
+            min: 0,
         },
         sold: {
             type: Number,
             default: 0,
-            min: 0, // Ensure sold is not negative
+            min: 0,
         },
         images: [
             {
                 public_id: {
                     type: String,
-                    required: true, // Ensure public_id is provided
+                    required: true,
                 },
                 url: {
                     type: String,
-                    required: true, // Ensure URL is provided
+                    required: true,
                 },
             },
         ],

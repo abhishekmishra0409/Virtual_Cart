@@ -50,6 +50,18 @@ export const fetchTrendingProducts = createAsyncThunk(
     }
 );
 
+// Fetch search results
+export const fetchSearchResults = createAsyncThunk(
+    'search/fetchResults',
+    async (query, thunkAPI) => {
+        try {
+           return  await productService.searchProducts(query);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.message);
+        }
+    }
+);
+
 // Add to Wishlist
 export const addToWishlist = createAsyncThunk(
     "products/addToWishlist",
@@ -138,6 +150,7 @@ const initialState = {
     topSellingProducts: [],
     trendingProducts: [],
     reviews: [],
+    results: [],
     productDetails: null,
     isLoadingProducts: false,
     isLoadingWishlist: false,
@@ -226,7 +239,19 @@ const productSlice = createSlice({
                 state.isError = true;
                 state.message = action.payload || 'Failed to fetch trending products';
             })
-
+            .addCase(fetchSearchResults.pending, (state) => {
+                state.isLoading = true;
+                state.isError = false;
+            })
+            .addCase(fetchSearchResults.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.results = action.payload;
+            })
+            .addCase(fetchSearchResults.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
             // Add to Wishlist
             .addCase(addToWishlist.pending, (state) => {
                 state.isLoadingWishlist = true;

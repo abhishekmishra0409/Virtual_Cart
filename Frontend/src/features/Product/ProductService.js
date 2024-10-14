@@ -20,7 +20,12 @@ const getFeaturedProducts = async () => {
 };
 
 const getTrendingProducts = async () => {
-    const response = await axios.get(`${base_url}product/?tags=featured`);
+    const response = await axios.get(`${base_url}product/?tags=popular`);
+    return response.data;
+};
+
+const searchProducts = async (query) => {
+    const response = await axios.get(`${base_url}product/?title=${query}`);
     return response.data;
 };
 
@@ -62,7 +67,8 @@ const productService = {
     getProductsByCategory,
     getProductsByColor,
     getProductsByPrice,
-    addProductReview
+    addProductReview,
+    searchProducts
 };
 
 export default productService;

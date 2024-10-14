@@ -233,7 +233,7 @@ export const Home = () => {
                                 <h5 className="font-55 mb-15">Series S</h5><span
                                     className="font-16">From $3500.00</span>
                                 <div className="mt-25"><a className="btn btn-brand-2 btn-arrow-right"
-                                                          href="shop-fullwidth.html">Shop Now</a></div>
+                                                          href="/">Shop Now</a></div>
                             </div>
                         </div>
                         <div className="col-xl-8 col-lg-12">
@@ -243,7 +243,7 @@ export const Home = () => {
                                         <h3 className="font-33 mb-10">Xbox Core Wireless Controller</h3>
                                         <p className="font-18">Aqua Shift Special Edition</p>
                                         <div className="mt-25"><a className="btn btn-info btn-arrow-right"
-                                                                  href="shop-fullwidth.html">Shop Now</a></div>
+                                                                  href="/">Shop Now</a></div>
                                     </div>
                                 </div>
                                 <div className="image-small">
@@ -252,7 +252,7 @@ export const Home = () => {
                                         <p className="font-16">The Future of<br
                                             className="d-none d-lg-block"/> Creativity</p>
                                         <div className="mt-15"><a className="btn btn-link-brand-2 btn-arrow-brand-2"
-                                                                  href="shop-fullwidth.html">learn more</a></div>
+                                                                  href="/">learn more</a></div>
                                     </div>
                                 </div>
                             </div>
@@ -268,7 +268,7 @@ export const Home = () => {
                                         <h3 className="font-33 mb-15">Super discount for your first purchase</h3>
                                         <p className="font-18">Use discount code in checkout page.</p>
                                         <div className="mt-25"><a className="btn btn-brand-2 btn-arrow-right"
-                                                                  href="shop-fullwidth.html">Shop Now</a></div>
+                                                                  href="/">Shop Now</a></div>
                                     </div>
                                 </div>
                             </div>

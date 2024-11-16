@@ -19,6 +19,11 @@ export const ProductByCategory = () => {
         dispatch(fetchProductsByCategory(id));
     }, [dispatch]);
 
+    const handlePageChange = (pageNumber) => {
+        if (pageNumber < 1 || pageNumber > totalPages) return;
+        setCurrentPage(pageNumber);
+    };
+
     if (isLoading) return (<div className="loader">
         <p>Loading...</p>
     </div>);

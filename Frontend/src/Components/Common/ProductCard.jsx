@@ -17,6 +17,8 @@ export const ProductCard = ({ product }) => {
     const productColor = product?.color[0]._id;
     const totalRating = product?.ratings?.length || 0;
 
+    // console.log(productRating)
+
     const handleAddToWishlist = (prodId) => (e) => {
         e.preventDefault();
         dispatch(addToWishlist(prodId));
@@ -98,10 +100,6 @@ export const ProductCard = ({ product }) => {
                             Add To Cart
                         </a>
                     </div>
-
-                    {/*<ul className="list-features">*/}
-                    {/*    <p dangerouslySetInnerHTML={{__html: product?.description || "No description available"}}/>*/}
-                    {/*</ul>*/}
                 </div>
             </div>
         </div>

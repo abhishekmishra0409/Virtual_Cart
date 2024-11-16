@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from 'react-router-dom'; // For navigating with URL params
+import { useNavigate } from 'react-router-dom';
 import { fetchColor, fetchCategories } from "../../features/User/UserSlice.js";
-import { FiltersModal } from "../Common/FiltersModal.jsx";
 
 export const SideBar = () => {
-    const [showFilters, setShowFilters] = useState(false);
     const dispatch = useDispatch();
-    const navigate = useNavigate(); // Use navigate to update URL with filters
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(fetchCategories());
@@ -16,9 +14,6 @@ export const SideBar = () => {
 
     const { categories , color, isLoading, isError } = useSelector((state) => state.auth);
 
-    console.log()
-    const handleShowFilters = () => setShowFilters(true);
-    const handleCloseFilters = () => setShowFilters(false);
 
     // Manually set price filters with gte and lte
     const priceFilters = [
@@ -30,22 +25,22 @@ export const SideBar = () => {
         { label: "Over ₹100000", gte: 100000, lte: Infinity },
     ];
 
-    const [activeFilter, setActiveFilter] = useState(null); // To track the active filter
+    const [activeFilter, setActiveFilter] = useState(null);
 
     // Handle filter selection (Price or Color)
     const handleFilterSelection = (type, gte = null, lte = null, color = null) => {
         if (type === 'price') {
-            setActiveFilter({ type, gte, lte }); // Set active price filter
-            navigate(`?gte=${gte}&lte=${lte}`); // Update the URL with price filter parameters
+            setActiveFilter({ type, gte, lte });
+            navigate(`?gte=${gte}&lte=${lte}`);
         } else if (type === 'color') {
-            setActiveFilter({ type, color }); // Set active color filter
-            navigate(`?color=${color}`); // Update the URL with color filter parameter
+            setActiveFilter({ type, color });
+            navigate(`?color=${color}`);
         }
     };
 
     const colors = color || [];
     const categoriess = categories || [];
-    console.log(colors)
+    // console.log(colors)
 
     if (isLoading) return <div>Loading filters...</div>;
     if (isError) return <div>Error loading filters</div>;
@@ -116,19 +111,8 @@ export const SideBar = () => {
                             </li>
                         ))}
                     </ul>
-
-
-                    {/*<a*/}
-                    {/*    onClick={handleShowFilters}*/}
-                    {/*    className="btn btn-filter font-sm color-brand-3 font-medium"*/}
-                    {/*    href="/"*/}
-                    {/*    data-bs-toggle="modal"*/}
-                    {/*>*/}
-                    {/*    All Filters*/}
-                    {/*</a>*/}
                 </div>
             </div>
-            <FiltersModal show={showFilters} handleClose={handleCloseFilters}/>
         </>
     );
 };

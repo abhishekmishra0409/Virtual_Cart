@@ -17,6 +17,11 @@ export const Shop = () => {
         dispatch(fetchProducts());
     }, [dispatch]);
 
+    const handlePageChange = (pageNumber) => {
+        if (pageNumber < 1 || pageNumber > totalPages) return;
+        setCurrentPage(pageNumber);
+    };
+
     if (isLoading) return (<div className="loader">
         <p>Loading...</p>
     </div>);
@@ -28,6 +33,8 @@ export const Shop = () => {
     const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
     const totalPages = Math.ceil(products.length / productsPerPage);
     // console.log(products)
+
+
     return (
         <>
             <div className="section-box shop-template mt-30">
@@ -35,7 +42,7 @@ export const Shop = () => {
                     <div className="row">
                         <div className="col-lg-9 order-first order-lg-last">
                             <div className="banner-ads-top mb-30">
-                                <a href="/"><img src="assets/imgs/page/shop/banner.png" alt="Ecom" /></a>
+                                <a href="/"><img src="/assets/imgs/page/shop/banner.png" alt="Ecom" /></a>
                             </div>
                             <div className="box-filters mt-0 pb-5 border-bottom">
                                 <div className="row">

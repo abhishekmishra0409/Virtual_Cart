@@ -1,5 +1,4 @@
 import { toast } from "react-toastify";
-import { getWishlist } from "../features/User/UserSlice";
 
 const authMiddleware = (store) => (next) => (action) => {
     const state = store.getState();

@@ -5,9 +5,6 @@
   font-family:sans-serif ;
   color: #425A8B;
 }
-.bgcolor{
-  background-color: #466349;
-}
 /*Header Section*/
 
 .Title{
@@ -58,40 +55,6 @@
   font-weight: bold;
   color: #425A8B;
 }
-/* Footer Section */
-.footer-bg {
-  background-color: #F0F3F8; /* Use the background color from the image */
-}
-
-.footer-title {
-  color: #0E224D; /* The dark blue color used in titles */
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.footer-links a {
-  color: #0E224D; /* Ensure the links use the same dark blue color */
-}
-
-.footer-links a:hover {
-  text-decoration: underline;
-}
-
-.footer-icon {
-  font-size: 1.25rem;
-  color: #0E224D; /* Use the same color as the titles */
-}
-
-.footer-app-logo {
-  width: 120px;
-  margin-right: 10px;
-}
-
-.footer-payment-logo {
-  width: 40px;
-  margin-right: 10px;
-}
-
 .btn.btn-category {
   background-color: #466349;
   background-image: url(assets/imgs/page/homepage4/open-close.svg);
@@ -106,13 +69,4 @@
 .btn.btn-category:hover{
   background-color: #466349;
   color: #ffffff;
-}
-
-
-
-
-.checkout-price {
-  overflow: hidden; /* Prevents overflow */
-  text-align: right; /* Aligns price to the right */
-  white-space: nowrap; /* Prevents text wrapping */
 }

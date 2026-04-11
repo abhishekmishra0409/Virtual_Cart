@@ -26,8 +26,16 @@ import ViewEnq from "./pages/ViewEnq.jsx";
 import ViewOrder from "./pages/ViewOrder.jsx";
 
 const ProtectedRoute = ({ children }) => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    return user ? children : <Navigate to="/" />;
+    const user = localStorage.getItem("adminUser")
+        ? JSON.parse(localStorage.getItem("adminUser"))
+        : null;
+
+    if (user && user?.role !== "admin") {
+        localStorage.removeItem("adminUser");
+        localStorage.removeItem("adminToken");
+    }
+
+    return user?.role === "admin" ? children : <Navigate to="/" replace />;
 };
 
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import CustomInput from "../components/CustomInput.jsx";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +16,9 @@ let schema = yup.object().shape({
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const adminUser = localStorage.getItem("adminUser")
+    ? JSON.parse(localStorage.getItem("adminUser"))
+    : null;
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -26,17 +29,19 @@ const Login = () => {
       dispatch(login(values));
     },
   });
-  const authState = useSelector((state) => state);
-
-  const { user, isError, isSuccess, isLoading, message } = authState.auth;
+  const { user, isError, isLoading, message } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (isSuccess) {
-      navigate("admin");
-    } else {
-      navigate("");
+    if (adminUser?.role === "admin" || (user && user?.role === "admin")) {
+      navigate("/admin", { replace: true });
     }
-  }, [user, isError, isSuccess, isLoading]);
+  }, [adminUser, navigate, user]);
+
+  const loginErrorMessage =
+    typeof message === "string"
+      ? message
+      : message?.message || "Unable to login";
+
   return (
     <div className="py-5" style={{ background: "#466349", minHeight: "100vh" }}>
       <br />
@@ -48,13 +53,13 @@ const Login = () => {
         <h3 className="text-center title">Login</h3>
         <p className="text-center">Login to your account to continue.</p>
         <div className="error text-center">
-          {message.message == "Rejected" ? "You are not an Admin" : ""}
+          {isError ? loginErrorMessage : ""}
         </div>
         <form action="" onSubmit={formik.handleSubmit}>
           <CustomInput
             type="text"
             label="Email Address"
-            id="email"
+            i_id="email"
             name="email"
             onChng={formik.handleChange("email")}
             onBlr={formik.handleBlur("email")}
@@ -66,7 +71,7 @@ const Login = () => {
           <CustomInput
             type="password"
             label="Password"
-            id="pass"
+            i_id="pass"
             name="password"
             onChng={formik.handleChange("password")}
             onBlr={formik.handleBlur("password")}
@@ -84,8 +89,9 @@ const Login = () => {
             className="border-0 px-3 py-2 text-white fw-bold w-100 text-center text-decoration-none fs-5"
             style={{ background: "#466349" }}
             type="submit"
+            disabled={isLoading}
           >
-            Login
+            {isLoading ? "Logging in..." : "Login"}
           </button>
         </form>
       </div>

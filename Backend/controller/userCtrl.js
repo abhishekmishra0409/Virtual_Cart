@@ -12,6 +12,12 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const { sendEmail } = require("./emailctrl");
 
+const refreshTokenCookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+};
+
 // Create a new user
 const createUser = asyncHandler(async (req, res) => {
   const email = req.body.email;
@@ -39,7 +45,7 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
       { new: true }
     );
     res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
+      ...refreshTokenCookieOptions,
       maxAge: 72 * 60 * 60 * 1000,
     });
     res.json({
@@ -49,9 +55,11 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
       email: findUser?.email,
       mobile: findUser?.mobile,
       address: findUser?.address,
+      role: findUser?.role,
       token: generateToken(findUser?._id),
     });
   } else {
+    res.status(401);
     throw new Error("Invalid Credentials");
   }
 });
@@ -62,7 +70,10 @@ const loginAdmin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   // check if user exists or not
   const findAdmin = await User.findOne({ email });
-  if (findAdmin.role !== "admin") throw new Error("Not Authorised");
+  if (!findAdmin || findAdmin.role !== "admin") {
+    res.status(403);
+    throw new Error("Not Authorised");
+  }
   if (findAdmin && (await findAdmin.isPasswordMatched(password))) {
     const refreshToken = await generateRefreshToken(findAdmin?._id);
     const updateuser = await User.findByIdAndUpdate(
@@ -73,7 +84,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
       { new: true }
     );
     res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
+      ...refreshTokenCookieOptions,
       maxAge: 72 * 60 * 60 * 1000,
     });
     res.json({
@@ -82,9 +93,11 @@ const loginAdmin = asyncHandler(async (req, res) => {
       lastname: findAdmin?.lastname,
       email: findAdmin?.email,
       mobile: findAdmin?.mobile,
+      role: findAdmin?.role,
       token: generateToken(findAdmin?._id),
     });
   } else {
+    res.status(401);
     throw new Error("Invalid Credentials");
   }
 });
@@ -93,40 +106,49 @@ const loginAdmin = asyncHandler(async (req, res) => {
 
 const handleRefreshToken = asyncHandler(async (req, res) => {
   const cookie = req.cookies;
-  if (!cookie?.refreshToken) throw new Error("No Refresh Token in Cookies");
+  if (!cookie?.refreshToken) {
+    res.status(401);
+    throw new Error("No Refresh Token in Cookies");
+  }
   const refreshToken = cookie.refreshToken;
   const user = await User.findOne({ refreshToken });
-  if (!user) throw new Error(" No Refresh token present in db or not matched");
-  jwt.verify(refreshToken, process.env.JWT_SECRET, (err, decoded) => {
-    if (err || user.id !== decoded.id) {
+  if (!user) {
+    res.status(403);
+    throw new Error("No Refresh token present in db or not matched");
+  }
+
+  try {
+    const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
+    if (user.id !== decoded.id) {
+      res.status(403);
       throw new Error("There is something wrong with refresh token");
     }
+
     const accessToken = generateToken(user?._id);
     res.json({ accessToken });
-  });
+  } catch (error) {
+    res.status(res.statusCode === 200 ? 403 : res.statusCode);
+    throw new Error("There is something wrong with refresh token");
+  }
 });
 
 // logout functionality
 
 const logout = asyncHandler(async (req, res) => {
   const cookie = req.cookies;
-  if (!cookie?.refreshToken) throw new Error("No Refresh Token in Cookies");
+  if (!cookie?.refreshToken) {
+    return res.sendStatus(204);
+  }
   const refreshToken = cookie.refreshToken;
   const user = await User.findOne({ refreshToken });
   if (!user) {
-    res.clearCookie("refreshToken", {
-      httpOnly: true,
-      secure: true,
-    });
+    res.clearCookie("refreshToken", refreshTokenCookieOptions);
     return res.sendStatus(204); // forbidden
   }
-  await User.findOneAndUpdate(refreshToken, {
+  await User.findOneAndUpdate({ refreshToken }, {
     refreshToken: "",
   });
-  res.clearCookie("refreshToken", {
-    httpOnly: true,
-    secure: true,
-  });
+  res.clearCookie("refreshToken", refreshTokenCookieOptions);
   res.sendStatus(204); // forbidden
 });
 

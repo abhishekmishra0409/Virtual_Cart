@@ -3,8 +3,8 @@ import authService from "./authServices";
 import {toast} from "react-toastify";
 
 
-const getUserfromLocalStorage = localStorage.getItem("user")
-  ? JSON.parse(localStorage.getItem("user"))
+const getUserfromLocalStorage = localStorage.getItem("adminUser")
+  ? JSON.parse(localStorage.getItem("adminUser"))
   : null;
 const initialState = {
   user: getUserfromLocalStorage,
@@ -21,7 +21,9 @@ export const login = createAsyncThunk(
     try {
       return await authService.login(userData);
     } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(
+        error?.response?.data?.message || error?.message || "Admin login failed"
+      );
     }
   }
 );
@@ -141,6 +143,16 @@ export const authSlice = createSlice({
           state.isLoading = false;
           state.isError = true;
           state.message = action.payload;
+        })
+        .addCase(logout.fulfilled, (state) => {
+          state.user = null;
+          state.orders = [];
+          state.orderbyuser = [];
+          state.orderStatusUpdated = false;
+          state.isError = false;
+          state.isLoading = false;
+          state.isSuccess = false;
+          state.message = "";
         });
   },
 });

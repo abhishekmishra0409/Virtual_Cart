@@ -1,11 +1,9 @@
-import axios from "axios";
-import { base_url } from "../../utils/baseURL.js";
-import config  from "../../utils/axiosconfig.js";
+import apiClient from "../../utils/axiosconfig.js";
 
 // Add to Cart function
 const addToCart = async (productData) => {
     try {
-        const response = await axios.post(`${base_url}user/cart`, productData, config);
+        const response = await apiClient.post("user/cart", productData);
         return response.data;
     } catch (error) {
         throw error.response?.data || error.message;
@@ -15,7 +13,7 @@ const addToCart = async (productData) => {
 // Get Cart function
 const getCart = async () => {
     try {
-        const response = await axios.get(`${base_url}user/cart`, config);
+        const response = await apiClient.get("user/cart");
         const cart = {
             products: response.data.products,
             cartTotal: response.data.cartTotal,
@@ -31,7 +29,7 @@ const getCart = async () => {
 // Delete Product from Cart function
 const deleteCartProduct = async (productId) => {
     try {
-        const response = await axios.delete(`${base_url}user/cart/${productId}`, config);
+        const response = await apiClient.delete(`user/cart/${productId}`);
         return response.data; // Could return the updated cart or a success message
     } catch (error) {
         throw error.response?.data || error.message;
@@ -42,7 +40,7 @@ const deleteCartProduct = async (productId) => {
 // Apply coupon function
 const applyCoupon = async (coupon) => {
     try {
-        const response = await axios.post(`${base_url}user/cart/applycoupon`, { coupon }, config);
+        const response = await apiClient.post("user/cart/applycoupon", { coupon });
         return response.data;
     } catch (error) {
         throw error.response?.data || error.message;
@@ -53,7 +51,7 @@ const applyCoupon = async (coupon) => {
 // Create Order function
 const createOrder = async (orderData) => {
     try {
-        const response = await axios.post(`${base_url}user/cart/cash-order`, orderData, config);
+        const response = await apiClient.post("user/cart/cash-order", orderData);
         return response.data;
     } catch (error) {
         throw error.response?.data || error.message;

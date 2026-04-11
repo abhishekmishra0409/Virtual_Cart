@@ -3,11 +3,12 @@ import { config } from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 
 const login = async (user) => {
-  const response = await axios.post(`${base_url}user/admin-login`, user);
+  const response = await axios.post(`${base_url}user/admin-login`, user, {
+    withCredentials: true,
+  });
   if (response.data) {
-    localStorage.setItem("user", JSON.stringify(response.data));
-    localStorage.setItem("token", JSON.stringify(response.data.token));
-
+    localStorage.setItem("adminUser", JSON.stringify(response.data));
+    localStorage.setItem("adminToken", response.data.token);
   }
   return response.data;
 };
@@ -33,10 +34,12 @@ const updateOrderStatus = async (orderId, status) => {
 
 const logout = async () => {
   try {
-      localStorage.removeItem("user");
-
+    await axios.get(`${base_url}user/logout`, { withCredentials: true });
   } catch (error) {
-    console.error("Logout failed:", error);
+    console.error("Logout request failed:", error);
+  } finally {
+    localStorage.removeItem("adminUser");
+    localStorage.removeItem("adminToken");
   }
 };
 const authService = {

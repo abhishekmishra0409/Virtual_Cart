@@ -1,11 +1,12 @@
-import axios from "axios";
-import { base_url } from "../../utils/baseURL.js";
-import config from "../../utils/axiosconfig.js";
+import apiClient, { clearAuthStorage } from "../../utils/axiosconfig.js";
 
 // Register function
 const register = async (userData) => {
     try {
-        const response = await axios.post(`${base_url}user/register`, userData);
+        const response = await apiClient.post("user/register", userData, {
+            _skipAuthHeader: true,
+            _skipAuthRefresh: true,
+        });
         return response.data;
     } catch (error) {
         throw error.response?.data || error.message;
@@ -15,7 +16,10 @@ const register = async (userData) => {
 // Login function
 const login = async (loginData) => {
     try {
-        const response = await axios.post(`${base_url}user/login`, loginData);
+        const response = await apiClient.post("user/login", loginData, {
+            _skipAuthHeader: true,
+            _skipAuthRefresh: true,
+        });
         if (response.data.token) {
             localStorage.setItem('userToken', response.data.token);
             localStorage.setItem('user', JSON.stringify(response.data));
@@ -29,7 +33,7 @@ const login = async (loginData) => {
 // Get Wishlist function
 const getWishlist = async () => {
     try {
-        const response = await axios.get(`${base_url}user/wishlist`, config);
+        const response = await apiClient.get("user/wishlist");
         return response.data.wishlist;
     } catch (error) {
         throw error.response?.data || error.message;
@@ -39,7 +43,7 @@ const getWishlist = async () => {
 // Update user profile or address
 const updateUser = async (userData) => {
     try {
-        const response = await axios.put(`${base_url}user/edit-user`, userData, config);
+        const response = await apiClient.put("user/edit-user", userData);
         return response.data;
     } catch (error) {
         throw error.response?.data || error.message;
@@ -49,7 +53,7 @@ const updateUser = async (userData) => {
 // Add address function
 const addAddress = async (addressData) => {
     try {
-        const response = await axios.put(`${base_url}user/save-address`, addressData, config);
+        const response = await apiClient.put("user/save-address", addressData);
         return response.data;
     } catch (error) {
         throw error.response?.data || error.message;
@@ -58,20 +62,20 @@ const addAddress = async (addressData) => {
 
 // Fetch all categories
 const getCategories = async () => {
-    const response = await axios.get(`${base_url}category`);
+    const response = await apiClient.get("category");
     return response.data;
 };
 
 // Fetch all colors
 const getColor = async () => {
-    const response = await axios.get(`${base_url}color`);
+    const response = await apiClient.get("color");
     return response.data;
 };
 
 // Get Orders function
 const getOrders = async () => {
     try {
-        const response = await axios.get(`${base_url}user/get-orders`, config);
+        const response = await apiClient.get("user/get-orders");
         return response.data;
     } catch (error) {
         throw error.response?.data || error.message;
@@ -80,10 +84,16 @@ const getOrders = async () => {
 
 // Logout function
 const logout = async () => {
-    localStorage.removeItem('userToken');
-    localStorage.removeItem('user');
-    localStorage.removeItem('checkoutCart');
-    localStorage.removeItem('checkoutTotal');
+    try {
+        await apiClient.get("user/logout", {
+            _skipAuthHeader: true,
+            _skipAuthRefresh: true,
+        });
+    } catch {
+        // Local logout should still complete if the refresh cookie is already gone.
+    } finally {
+        clearAuthStorage();
+    }
 };
 
 export const authService = {

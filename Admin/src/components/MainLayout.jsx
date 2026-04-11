@@ -27,20 +27,23 @@ const MainLayout = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [collapsed, setCollapsed] = useState(false);
+    const user = localStorage.getItem("adminUser")
+        ? JSON.parse(localStorage.getItem("adminUser"))
+        : null;
 
 
     useEffect(() => {
         if (!user) {
             navigate("/");
         }
-    }, );
+    }, [navigate, user]);
 
     const handleSignOut = () => {
         dispatch(logout())
             .unwrap()
             .then(() => {
-                localStorage.removeItem("user");
-                localStorage.removeItem("token");
+                localStorage.removeItem("adminUser");
+                localStorage.removeItem("adminToken");
                 navigate("/", { replace: true });
                 message.success("Logout Successfully!");
             })
@@ -49,9 +52,6 @@ const MainLayout = () => {
                 message.error("Logout failed");
             });
     };
-    const user = JSON.parse(localStorage.getItem("user"));
-    // console.log(user)
-
     const {
         token: {colorBgContainer},
     } = theme.useToken();

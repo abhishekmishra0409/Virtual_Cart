@@ -2,9 +2,10 @@ import { Nav, Dropdown, ButtonGroup } from 'react-bootstrap';
 import { FaHeart, FaShoppingCart, FaUser, FaMapMarkerAlt } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { logout ,fetchCategories} from '../features/User/UserSlice.js';
+import { logout ,fetchCategories, setAuthenticated} from '../features/User/UserSlice.js';
 import { useEffect, useState } from 'react';
 import {fetchSearchResults} from "../features/Product/ProductSlice.js";
+import { ensureAuthSession } from "../utils/axiosconfig.js";
 
 
 export const Header = () => {
@@ -19,15 +20,23 @@ export const Header = () => {
     const { categories } = useSelector((state) => state.auth);
 
     useEffect(() => {
-        const token = localStorage.getItem('userToken');
-        if (token) {
-            dispatch({ type: 'auth/setAuthenticated', payload: true });
-        } else {
-            dispatch({ type: 'auth/setAuthenticated', payload: false });
-        }
+        let isMounted = true;
+
+        const syncAuthSession = async () => {
+            const hasValidSession = await ensureAuthSession();
+            if (isMounted) {
+                dispatch(setAuthenticated(hasValidSession));
+            }
+        };
+
+        syncAuthSession();
 
         // Fetch categories when component mounts
         dispatch(fetchCategories());
+
+        return () => {
+            isMounted = false;
+        };
     }, [dispatch]);
 
     // Handle logout logic

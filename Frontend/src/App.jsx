@@ -1,6 +1,7 @@
 import './App.css';
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
 import { Layout } from "./Components/Layout.jsx";
 import { Home } from "./Pages/Home.jsx";
 import { Contact } from "./Pages/Contact.jsx";
@@ -25,6 +26,43 @@ import {UserSetting} from "./Components/Accounts/UserSetting.jsx";
 import {Order} from "./Components/Accounts/Order.jsx";
 import {BlogByCategory} from "./Pages/BlogByCategory.jsx";
 import {ProductBySearch} from "./Pages/ProductBySearch.jsx";
+import { ensureAuthSession } from "./utils/axiosconfig.js";
+import { setAuthenticated } from "./features/User/UserSlice.js";
+
+const ProtectedRoute = () => {
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const { isAuthenticated } = useSelector((state) => state.auth);
+    const [isCheckingSession, setIsCheckingSession] = useState(true);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const checkSession = async () => {
+            const hasValidSession = await ensureAuthSession();
+            if (isMounted) {
+                dispatch(setAuthenticated(hasValidSession));
+                setIsCheckingSession(false);
+            }
+        };
+
+        checkSession();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [dispatch]);
+
+    if (isCheckingSession) {
+        return null;
+    }
+
+    if (!isAuthenticated) {
+        return <Navigate to="/login" replace state={{ from: location }} />;
+    }
+
+    return <Outlet />;
+};
 
 export default function App() {
     return (
@@ -42,20 +80,22 @@ export default function App() {
                         <Route path="blogs/category/:id" element={<BlogByCategory />} />
                         <Route path="contact" element={<Contact />} />
                         <Route path="about" element={<About />} />
-                        <Route path="wishlist" element={<Wishlist />} />
                         <Route path="register" element={<Register />} />
                         <Route path="login" element={<Login />} />
                         <Route path="forgot-password" element={<ForgotPassword />} />
                         <Route path="term" element={<Term />} />
                         <Route path="blog/:blogId" element={<BlogSingle />} />
                         <Route path="product/:id" element={<SingleProduct />} />
-                        <Route path="cart" element={<Cart />} />
-                        <Route path="checkout" element={<Checkout />} />
-                        <Route path="accounts" element={<Accounts />}>
-                            <Route index element={<Notification />} />
+                        <Route element={<ProtectedRoute />}>
                             <Route path="wishlist" element={<Wishlist />} />
-                            <Route path="settings" element={<UserSetting />} />
-                            <Route path="orders" element={<Order />} />
+                            <Route path="cart" element={<Cart />} />
+                            <Route path="checkout" element={<Checkout />} />
+                            <Route path="accounts" element={<Accounts />}>
+                                <Route index element={<Notification />} />
+                                <Route path="wishlist" element={<Wishlist />} />
+                                <Route path="settings" element={<UserSetting />} />
+                                <Route path="orders" element={<Order />} />
+                            </Route>
                         </Route>
                     </Route>
                 </Routes>

@@ -16,7 +16,7 @@
 }
 .Title p{
   font-size: 25px;
-  color: #466349;
+  color: #425A8B;
   font-family: "Wanderlust Shine";
   margin-bottom: 0;
 }
@@ -28,7 +28,7 @@
 }
 
 .custom-nav-link:hover {
-  color: #466349 !important; /* Hover color */
+  color: #0BA9ED !important; /* Hover color */
   text-decoration: none;
 }
 
@@ -40,7 +40,7 @@
 
 /* Change icon color on hover */
 .custom-nav-link:hover .custom-icon {
-  color: #466349; /* Matches hover color */
+  color: #0BA9ED; /* Matches hover color */
 }
 
 /* Ensure the badges are styled correctly */
@@ -56,7 +56,7 @@
   color: #425A8B;
 }
 .btn.btn-category {
-  background-color: #466349;
+  background-color: #425A8B;
   background-image: url(assets/imgs/page/homepage4/open-close.svg);
   background-repeat: no-repeat;
   background-position: 17px 9px;
@@ -67,6 +67,6 @@
   text-align: left;
 }
 .btn.btn-category:hover{
-  background-color: #466349;
+  background-color: #0E224D;
   color: #ffffff;
 }
